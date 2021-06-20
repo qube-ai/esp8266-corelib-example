@@ -5,6 +5,9 @@
 #include <CloudIoTCore.h>
 #include <CloudIoTCoreMqtt.h>
 
+long last_state_time = 0;
+#define SENDING_PERIOD 10000
+
 void myCallback(MQTTClient *client, char topic[], StaticJsonDocument<120> doc)
 {
   // Serialize and create a new JSON string representation
@@ -52,4 +55,13 @@ void setup()
   Serial.println("All work in setup section is complete.");
 }
 
-void loop() { corelib::loop(); }
+void loop()
+{
+  corelib::loop();
+
+  if (millis() - last_state_time > SENDING_PERIOD)
+  {
+    deviceState();
+    last_state_time = millis();
+  }
+}
