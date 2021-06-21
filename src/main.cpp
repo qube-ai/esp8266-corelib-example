@@ -1,3 +1,4 @@
+#if defined(RELEASE)
 #include <Arduino.h>
 
 #include "ArduinoJson.h"
@@ -20,6 +21,7 @@ void myCallback(MQTTClient *client, char topic[], StaticJsonDocument<120> doc)
 String deviceState()
 {
   String state = "{\"ping2\": \"pong2\"}";
+  iotcore::publishState(state);
   return state;
 }
 
@@ -29,7 +31,6 @@ void setup()
   delay(100);
 
   corelib::setup();
-  Serial.println("corelib setup complete.");
 
   // Get IoTCore details
   char project_id[20] = "";
@@ -61,7 +62,9 @@ void loop()
 
   if (millis() - last_state_time > SENDING_PERIOD)
   {
+    Serial.println("Running device state function...");
     deviceState();
     last_state_time = millis();
   }
 }
+#endif

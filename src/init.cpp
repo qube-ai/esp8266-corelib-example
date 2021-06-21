@@ -38,14 +38,18 @@ void setup()
 	while (!Serial)
 		;
 
+	Serial.print("Starting corelib setup...");
 	corelib::setup();
+	Serial.println("DONE");
 
 	// Set WiFi creds
+	Serial.print("Setting WiFi credentials...");
 	storage::setWiFiCreds(0, SSID0, PASS0);
 	storage::setWiFiCreds(1, SSID1, PASS1);
 	storage::setWiFiCreds(2, SSID2, PASS2);
 	storage::setWiFiCreds(3, SSID3, PASS3);
 	storage::setWiFiCreds(4, SSID4, PASS4);
+	Serial.println("DONE");
 
 	// Get WiFi Creds
 	storage::wifi_cred cred1 = storage::getWiFiCreds(0);
@@ -66,11 +70,13 @@ void setup()
 		      cred5.password);
 
 	// Set IoTCore details
+	Serial.print("Setting Google Cloud Credentials...");
 	storage::setProjectID(PROJECT_ID);
 	storage::setLocation(CLOUD_LOCATION);
 	storage::setRegistryID(REGISTRY_ID);
 	storage::setDeviceID(DEVICE_ID);
 	storage::setTimezone(19800);
+	Serial.println("DONE");
 
 	// Get IoTCore details
 	char project_id[20] = "";
