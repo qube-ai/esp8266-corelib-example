@@ -20,9 +20,17 @@ void myCallback(MQTTClient *client, char topic[], StaticJsonDocument<120> doc)
 
 String deviceState()
 {
-  String state = "{\"ping2\": \"pong2\"}";
-  iotcore::publishState(state);
-  return state;
+  StaticJsonDocument<2096> doc;
+
+  doc["fw_version"] = "1.0";
+  doc["on_time"] = millis() / 1000;
+
+  // Prepare the message to be sent to IoT Core
+  String message_string;
+  serializeJson(doc, message_string);
+  iotcore::publishState(message_string);
+
+  return message_string;
 }
 
 void setup()
@@ -62,9 +70,10 @@ void loop()
 
   if (millis() - last_state_time > SENDING_PERIOD)
   {
-    Serial.println("Running device state function...");
+    Serial.print("Running device state function...");
     deviceState();
     last_state_time = millis();
+    Serial.println("DONE")
   }
 }
 #endif
