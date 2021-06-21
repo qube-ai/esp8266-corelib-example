@@ -73,7 +73,7 @@ void loop()
     Serial.print("Running device state function...");
     deviceState();
     last_state_time = millis();
-    Serial.println("DONE")
+    Serial.println("DONE");
   }
 }
 #endif
